@@ -24,3 +24,11 @@ class Post:
         self.created_date = datetime.strptime(raw_date, DATETIME_PATTERN)
         # safe conversion of string representation of list to actual list
         self.rubrics = literal_eval(raw_rubrics)
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "text": self.text,
+            "created_date": self.created_date.strftime(DATETIME_PATTERN),
+            "rubrics": self.rubrics,
+        }
