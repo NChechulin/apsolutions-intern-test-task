@@ -28,10 +28,16 @@ class Database:
         """
         pass
 
+    def __get_post_ids_by_text(self, search_text: str) -> List[int]:
+        """
+        Returns list of ids of posts which match search_text
+        """
+        ids = self.cursor.execute(GET_POST_IDS_BY_TEXT_QUERY, (search_text,))
+        # unpack list of tuples to list: [(1,), (2,), (3,)] -> [1, 2, 3]
+        return [tpl[0] for tpl in ids]
+
     def get_posts_by_text(self, search_text: str, to_fetch=20) -> List[Post]:
         """
         Returns list of 20 (or less) posts found which contain `search_text`
         """
-        ids = self.cursor.execute(GET_POST_IDS_BY_TEXT_QUERY, (search_text,))
-        # unpack list of tuples to list: [(1,), (2,), (3,)] -> [1, 2, 3]
-        ids = [tpl[0] for tpl in ids]
+        pass
