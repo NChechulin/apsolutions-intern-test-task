@@ -18,7 +18,12 @@ def delete_record_handler():
 
 @app.route("/get_posts", methods=["GET"])
 def get_posts_handler():
-    return "not ready yet..."
+    try:
+        query = request.args["query"]
+        posts = db.get_posts_by_text(query)
+        return dumps([post.as_dict() for post in posts])
+    except Exception as exc:
+        return str(exc)
 
 
 if __name__ == "__main__":
