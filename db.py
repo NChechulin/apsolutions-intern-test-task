@@ -54,4 +54,5 @@ class Database:
         """
         Returns list of 20 (or less) posts found which contain `search_text`
         """
-        pass
+        post_ids = self.__get_post_ids_by_text(search_text)
+        return [self.__get_post_by_id(id) for id in post_ids]
