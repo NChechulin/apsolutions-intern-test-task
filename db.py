@@ -1,6 +1,7 @@
 from os.path import exists as file_exists
-from sqlite3 import Connection, Cursor, connect
+from sqlite3 import Connection, Cursor, InterfaceError, connect
 from typing import List
+
 from post import Post
 
 GET_POST_IDS_BY_TEXT_QUERY = """
@@ -10,6 +11,11 @@ WHERE text MATCH ?
 LIMIT 20"""
 GET_POST_BY_ID_QUERY = """
 SELECT *
+FROM posts
+WHERE id = ?
+"""
+DELETE_POST_BY_ID_QUERY = """
+DELETE
 FROM posts
 WHERE id = ?
 """
@@ -31,7 +37,11 @@ class Database:
         Tries to delete post by it's id.
         Raises Exception if id is incorrect.
         """
-        pass
+        try:
+            self.cursor.execute(DELETE_POST_BY_ID_QUERY, (post_id,))
+            self.connection.commit()
+        except InterfaceError:
+            raise Exception("There is no post with such id")
 
     def __get_post_ids_by_text(self, search_text: str) -> List[int]:
         """
