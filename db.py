@@ -1,8 +1,13 @@
 from os.path import exists as file_exists
 from sqlite3 import Connection, Cursor, connect
 from typing import List
-
 from post import Post
+
+GET_POST_IDS_BY_TEXT_QUERY = """
+SELECT id
+FROM posts_index
+WHERE text MATCH ?
+LIMIT 20"""
 
 
 class Database:
@@ -27,4 +32,6 @@ class Database:
         """
         Returns list of 20 (or less) posts found which contain `search_text`
         """
-        pass
+        ids = self.cursor.execute(GET_POST_IDS_BY_TEXT_QUERY, (search_text,))
+        # unpack list of tuples to list: [(1,), (2,), (3,)] -> [1, 2, 3]
+        ids = [tpl[0] for tpl in ids]
