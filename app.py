@@ -6,7 +6,7 @@ app = Flask(__name__)
 db = Database("documents.sqlite")
 
 
-@app.route("/delete_record", methods=["GET"])
+@app.route("/delete_record", methods=["DELETE"])
 def delete_record_handler():
     try:
         id = int(request.args["id"])
