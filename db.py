@@ -29,7 +29,7 @@ class Database:
         if not file_exists(db_path):
             raise Exception("Specified database file does not exist")
 
-        self.connection = connect(db_path)
+        self.connection = connect(db_path, check_same_thread=False)
         self.cursor = self.connection.cursor()
 
     def try_delete_post_by_id(self, post_id: int):
@@ -37,11 +37,14 @@ class Database:
         Tries to delete post by it's id.
         Raises Exception if id is incorrect.
         """
-        try:
-            self.cursor.execute(DELETE_POST_BY_ID_QUERY, (post_id,))
-            self.connection.commit()
-        except InterfaceError:
-            raise Exception("There is no post with such id")
+        # check if post with this id exists
+        # if not, exception will be raised
+        # this is needed because sqlite doesn't throw exceptions
+        # when you try to delete row which doesn't exist
+        self.__get_post_by_id(post_id)
+        # actual deletion of the row
+        self.cursor.execute(DELETE_POST_BY_ID_QUERY, (post_id,)).fetchone()
+        self.connection.commit()
 
     def __get_post_ids_by_text(self, search_text: str) -> List[int]:
         """
