@@ -8,6 +8,11 @@ SELECT id
 FROM posts_index
 WHERE text MATCH ?
 LIMIT 20"""
+GET_POST_BY_ID_QUERY = """
+SELECT *
+FROM posts
+WHERE id = ?
+"""
 
 
 class Database:
@@ -35,6 +40,15 @@ class Database:
         ids = self.cursor.execute(GET_POST_IDS_BY_TEXT_QUERY, (search_text,))
         # unpack list of tuples to list: [(1,), (2,), (3,)] -> [1, 2, 3]
         return [tpl[0] for tpl in ids]
+
+    def __get_post_by_id(self, id: int) -> Post:
+        """
+        Returns post by it's id
+        """
+        raw_post = self.cursor.execute(GET_POST_BY_ID_QUERY, (id,)).fetchone()
+        if raw_post:
+            return Post(*raw_post)
+        raise Exception("There is no post with such id")
 
     def get_posts_by_text(self, search_text: str, to_fetch=20) -> List[Post]:
         """
