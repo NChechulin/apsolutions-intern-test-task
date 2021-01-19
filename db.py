@@ -32,7 +32,7 @@ class Database:
         self.connection = connect(db_path, check_same_thread=False)
         self.cursor = self.connection.cursor()
 
-    def try_delete_post_by_id(self, post_id: int):
+    async def try_delete_post_by_id(self, post_id: int):
         """
         Tries to delete post by it's id.
         Raises Exception if id is incorrect.
@@ -63,7 +63,7 @@ class Database:
             return Post(*raw_post)
         raise Exception("There is no post with such id")
 
-    def get_posts_by_text(self, search_text: str, to_fetch=20) -> List[Post]:
+    async def get_posts_by_text(self, search_text: str, to_fetch=20) -> List[Post]:
         """
         Returns list of 20 (or less) posts found which contain `search_text`
         """

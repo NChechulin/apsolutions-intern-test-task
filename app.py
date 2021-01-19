@@ -1,7 +1,10 @@
+import asyncio
 from json import dumps
 from flask import Flask, request
 from db import Database
+from time import sleep
 
+loop = asyncio.get_event_loop()
 app = Flask(__name__)
 db = Database("documents.sqlite")
 
@@ -10,7 +13,7 @@ db = Database("documents.sqlite")
 def delete_record_handler():
     try:
         id = int(request.args["id"])
-        db.try_delete_post_by_id(id)
+        loop.run_until_complete(db.try_delete_post_by_id(id))
         return "Success"
     except Exception as exc:
         return str(exc)
@@ -20,7 +23,7 @@ def delete_record_handler():
 def get_posts_handler():
     try:
         query = request.args["query"]
-        posts = db.get_posts_by_text(query)
+        posts = loop.run_until_complete(db.get_posts_by_text(query))
         return dumps([post.as_dict() for post in posts])
     except Exception as exc:
         return str(exc)
