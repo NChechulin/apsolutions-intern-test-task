@@ -69,3 +69,7 @@ class Database:
         """
         post_ids = self.__get_post_ids_by_text(search_text)
         return [self.__get_post_by_id(id) for id in post_ids]
+
+    def __del__(self):
+        self.cursor.close()
+        self.connection.close()
