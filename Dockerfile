@@ -13,6 +13,7 @@ COPY boot.sh ./
 RUN chmod +x boot.sh
 
 ENV APPLICATION_PORT=5000
+ENV APPLICATION_DB_PATH=app/documents.sqlite
 
 EXPOSE ${APPLICATION_PORT}
 ENTRYPOINT ["./boot.sh"]

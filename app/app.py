@@ -1,11 +1,12 @@
 import asyncio
 from json import dumps
+from os import getenv
 from flask import Flask, request
 from .db import Database
 
 loop = asyncio.get_event_loop()
 app = Flask(__name__)
-db = Database("app/documents.sqlite")
+db = Database(getenv("APPLICATION_DB_PATH"))
 
 
 @app.route("/delete_record", methods=["DELETE"])
