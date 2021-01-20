@@ -1,12 +1,11 @@
 import asyncio
 from json import dumps
 from flask import Flask, request
-from db import Database
-from time import sleep
+from .db import Database
 
 loop = asyncio.get_event_loop()
 app = Flask(__name__)
-db = Database("documents.sqlite")
+db = Database("app/documents.sqlite")
 
 
 @app.route("/delete_record", methods=["DELETE"])
