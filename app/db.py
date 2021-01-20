@@ -2,7 +2,7 @@ from os.path import exists as file_exists
 from sqlite3 import Connection, Cursor, InterfaceError, connect
 from typing import List
 
-from post import Post
+from .post import Post
 
 GET_POST_IDS_BY_TEXT_QUERY = """
 SELECT id
