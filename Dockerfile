@@ -12,7 +12,7 @@ COPY intern_task.py .
 COPY boot.sh ./
 RUN chmod +x boot.sh
 
-ENV FLASK_APP apsolutions-intern-test-task.py
+ENV APPLICATION_PORT=5000
 
-EXPOSE 5000
+EXPOSE ${APPLICATION_PORT}
 ENTRYPOINT ["./boot.sh"]
